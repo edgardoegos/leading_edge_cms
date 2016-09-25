@@ -73,6 +73,10 @@ module ApplicationHelper
         return Category.find(category_id) 
     end
 
+    def get_avatar
+        
+    end
+
     # ==== Role Permission ============================================
 
     def super_and_admin_roles

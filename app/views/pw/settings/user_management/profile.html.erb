@@ -35,7 +35,12 @@
                         <div class="col-md-2">
                             <div class="dv-user-info-wrapper">
                                 <div class="dv-user-profile-pic">
-                                    <img src="<%= image_url('assets/img/profiles/avatar.jpg') %>"  alt="" data-src="<%= image_url('assets/img/profiles/avatar.jpg') %>" data-src-retina="<%= image_url('assets/img/profiles/avatar2x.jpg') %>" width="150" height="150" />                  
+                                    <% if @user.avatar.present? %>
+                                        <img src="<%= @user.avatar.url(:original) %>"  alt="" data-src="<%= @user.avatar.url(:original) %>" data-src-retina="<%= @user.avatar.url(:medium) %>" width="150" height="150" />  
+                                    <% else %>
+                                        <img src="<%= image_path('assets/img/empty-state-avatar-1.png') %>" width="150" height="150">
+                                    <% end %>
+                                                    
                                 </div>
                             </div>
                         </div>

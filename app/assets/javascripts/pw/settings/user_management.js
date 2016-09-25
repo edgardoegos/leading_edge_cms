@@ -12,6 +12,7 @@
 //= require assets/plugins/jquery-validation/js/jquery.validate.min.js
 //= require assets/plugins/jquery-inputmask/jquery.inputmask.min.js
 
+//= require cropper/cropper.min.js
 
 //= require assets/js/form_validations.js
 

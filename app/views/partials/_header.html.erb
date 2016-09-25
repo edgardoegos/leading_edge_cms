@@ -58,7 +58,7 @@
             </a>
             <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="user-options">
                 <li><a href="<%= pw_settings_user_management_profile_path(current_user.id) %>">My Profile</a> </li>
-                <li><a href="calender.html">Account Settings</a> </li>
+                <li><a href="<%= pw_settings_user_management_account_settings_path(current_user.id) %>">Account Settings</a> </li>
                 <li class="divider"></li>
                 <li>
                     <%= form_tag(destroy_user_session_path, {:method => :delete, :id => "frm-image-attachment-delete"}) do %>

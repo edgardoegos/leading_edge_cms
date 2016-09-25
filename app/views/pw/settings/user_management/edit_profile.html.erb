@@ -20,6 +20,66 @@
         
         <div class="row">
             <div class="col-md-12">
+              <div class="grid simple vertical red">
+                <div class="grid-title no-border">
+                  
+                  <div class="tools"> </div>
+                </div>
+                <div class="grid-body no-border"> 
+                    
+                <div class="ibox-content">
+                    <h4>Profile <span class="semi-bold">Picture</span></h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="image-avatar-crop">
+                                <% if @user.avatar.present? %>
+                                    <img src="<%= @user.avatar.url(:original) %>">
+                                <% else %>
+                                    <img src="<%= image_path('assets/img/empty-state-avatar-1.png') %>">
+                                <% end %>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Preview <span class="semi-bold">Avatar</span></h4>
+                            <div class="col-md-12 mp0i">
+                                <div class="img-avatar-preview img-avatar-preview-sm"></div>
+                                <p>Recomended photo size: 200 × 200</p>
+                            </div>
+                            <div class="col-md-12 mp0i">
+                                <%= form_for @user, url: { action: "update_profile" }, :html => { :multipart => true, :class => "", :id => "frm-user-avatar" } do |f| %>
+                                
+                                    <%= f.hidden_field :avatar, class: "hide" %>
+                                
+                                    <label title="Upload image file" for="inputImage" class="btn btn-white ">
+                                        <input type="file" class="hide" id="inputImage" accept="image/*">
+                                        <i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload your photo
+                                    </label>
+                                    <button type="button" id="btn-crop" class="btn btn-info">Set as Profile Picture</button>
+                                
+                                <% end %>
+                            </div>
+                            <div class="col-md-12 mp0i">
+                                <h4>Crop Tools</h4>
+                                <div class="dv-btn-command-container">
+                                    <div class="btn-group">
+                                        <button class="btn btn-white btn-sm btn-small" id="zoomIn" type="button"><i class="fa fa-search-plus" aria-hidden="true"></i></button>
+                                        <button class="btn btn-white btn-sm btn-small" id="zoomOut" type="button"><i class="fa fa-search-minus" aria-hidden="true"></i></button>
+                                        <button class="btn btn-white btn-sm btn-small" id="rotateRight" type="button"><i class="fa fa-undo"></i></button>
+                                        <button class="btn btn-white btn-sm btn-small" id="rotateLeft" type="button"><i class="fa fa-repeat"></i></button>
+                                        <button class="btn btn-white btn-sm btn-small" id="btn-reload" type="button"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        <div class="row">
+            <div class="col-md-12">
                     <div class="grid simple vertical red">
                     <div class="grid-body no-border">
                         <div class="row column-seperation">
@@ -82,7 +142,7 @@
                                     </div>
                                     <div class="pull-right">
                                         <button class="btn btn-info btn-cons" type="submit"><i class="icon-ok"></i> <%= params[:action] == "new" ? "Create" : "Update" %></button>
-                                        <a href="<%= pw_settings_user_management_index_path %>" class="btn btn-white btn-cons" type="button">Cancel</a>
+                                        <a href="<%= pw_settings_user_management_profile_path(@user.id) %>" class="btn btn-white btn-cons" type="button">Cancel</a>
                                     </div>
                                   </div>
                         <% end %>

@@ -21,7 +21,7 @@ class Pw::Devise::SessionsController < DeviseController
     set_flash_message!(:notice, :signed_in)
     sign_in(resource_name, resource)
     yield resource if block_given?
-    
+      
     redirect_to pw_dashboard_path
       
   end

@@ -1,0 +1,128 @@
+<div class="page-content">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div id="portlet-config" class="modal hide">
+      <div class="modal-header">
+        <button data-dismiss="modal" class="close" type="button"></button>
+        <h3>Widget Settings</h3>
+      </div>
+      <div class="modal-body"> Widget settings form goes here </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="content">
+      <ul class="breadcrumb">
+          <li><p>Settings</p></li>
+        <li><a href="#">User Management</a></li>
+        <li><a href="#" class="active">Account Settings</a></li>
+      </ul>
+      <div class="page-title"> <i class="icon-custom-left"></i>
+        <h3>Account <span class="semi-bold">Settings</span></h3>
+      </div>
+        
+        
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="grid simple vertical red">
+                    <div class="grid-title no-border">
+                        
+                    </div>
+                    <div class="grid-body no-border">
+                        <table class="table no-more-tables m-t-20 m-l-20 m-b-30">
+                        <thead style="display:none">
+                          <tr>
+                            <th style="width:9%">Name</th>
+                            <th style="width:22%">Username</th>
+                            <th style="width:6%">Contact</th>
+                            <th style="width:1%"> </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="v-align-middle bold text-primary">Name</td>
+                              <td class="v-align-middle"><span class="muted"><%= @user.first_name %> <%= @user.last_name %></span> </td>
+                            <td><span class="muted bold" id="edit-name" style="cursor:pointer;">Edit</span> </td>
+                            <td class="v-align-middle"></td>
+                          </tr>
+                          <tr>
+                            <td class="v-align-middle bold text-primary">Username</td>
+                              <td class="v-align-middle"><span class="muted"><%= @user.username %></span> </td>
+                            <td><span class="muted bold" id="edit-username" style="cursor:pointer;">Edit</span> </td>
+                            <td class="v-align-middle"></td>
+                          </tr>
+                          <tr>
+                            <td class="v-align-middle bold text-primary">Contact</td>
+                              <td class="v-align-middle"><span class="muted"><%= @user.email %></span> </td>
+                            <td><span class="muted bold" id="edit-contact" style="cursor:pointer;">Edit</span> </td>
+                            <td class="v-align-middle"></td>
+                          </tr>
+                          <tr>
+                            <td class="v-align-middle bold text-primary">Password</td>
+                              <td class="v-align-middle"><span class="muted">Update you current password.</span> </td>
+                            <td><span class="muted bold" id="edit-password" style="cursor:pointer;">Edit</span> </td>
+                            <td class="v-align-middle"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+    </div>
+  </div>
+
+
+<div class="modal fade" id="mdl-edit-account" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <%= form_for @user, url: { action: "update_account_settings" }, :html => { :multipart => true, :class => "form-no-horizontal-spacing", :id => "form-condensed" } do |f| %>
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <br>
+                  <i class="fa fa-pencil fa-7x"></i>
+                    <h4 id="myModalLabel" class="semi-bold">Account Information</h4>
+                    <p class="no-margin">Update your <span id="spn-edit-name" class="semi-bold">name</span></p>
+                  <br>
+
+                        <div id="dv-name-container" class="hidden">
+                            <div class="row form-row">
+                              <div class="col-md-12">
+                                  <%= f.text_field :first_name, autofocus: true, class: "form-control", placeholder: "First Name", required: true %>
+                              </div>
+                              <div class="col-md-12">
+                                  <%= f.text_field :last_name, autofocus: true, class: "form-control", placeholder: "Last Name", required: true %>
+                              </div>
+                            </div>
+                        </div>
+                        <div id="dv-username-container" class="hidden">
+                            <div class="row form-row">
+                              <div class="col-md-12">
+                                  <%= f.text_field :username, autofocus: true, class: "form-control", placeholder: "First Name", required: true %>
+                              </div>
+                            </div>
+                        </div>
+                        <div id="dv-contact-container" class="hidden">
+                            <div class="row form-row">
+                              <div class="col-md-12">
+                                  <%= f.text_field :email, autofocus: true, class: "form-control", placeholder: "First Name", required: true %>
+                              </div>
+                            </div>
+                        </div>
+                        <div id="dv-password-container" class="hidden">
+                            <div class="row form-row">
+                              <div class="col-md-12">
+                                  <%= f.password_field :password, autofocus: true, class: "form-control", placeholder: "New Password", required: true %>
+                              </div>
+                              <div class="col-md-12">
+                                  <%= f.password_field :password_confirmation, autofocus: true, class: "form-control", placeholder: "Confirm Password", required: true %>
+                              </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                        <button type="submit" class="btn btn-info">Update</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>

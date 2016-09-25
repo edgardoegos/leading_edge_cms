@@ -28,6 +28,8 @@ Rails.application.routes.draw do
             get 'user_management/:id/profile' => 'user_management#profile', :as => :user_management_profile
             get 'user_management/:id/edit_profile' => 'user_management#edit_profile', :as => :user_management_edit_profile
             patch 'user_management/:id/update_profile' => 'user_management#update_profile', :as => :user_management_update_profile
+            get 'user_management/:id/account_settings' => 'user_management#account_settings', :as => :user_management_account_settings
+            patch 'user_management/:id/update_account_settings' => 'user_management#update_account_settings', :as => :user_management_update_account_settings
             
             resources :user_management
             

@@ -238,7 +238,7 @@ $(function() {
             $image.cropper("replace", "/assets/assets/img/empty-state.png");
             
         } else {
-            console.log('check')
+            
         }
         
     });

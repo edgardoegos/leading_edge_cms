@@ -4,7 +4,7 @@ class Pw::Settings::UserManagementController < ApplicationController
     layout "application_backend"
     
     before_action :authenticate_user!
-    before_action :check_authorization
+    before_action :check_authorization, except: [:profile, :edit_profile, :update_profile]
     
     before_action :get_all_users
     before_action :get_all_countries
@@ -60,9 +60,10 @@ class Pw::Settings::UserManagementController < ApplicationController
             flash[:success] = "User successfully deleted."
             redirect_to pw_settings_user_management_index_path
         end
+        
     end
     
-    def profile
+    def profile    
         @user = User.find(params[:id])
     end
     
@@ -77,8 +78,28 @@ class Pw::Settings::UserManagementController < ApplicationController
         if @user.update(user_params)
             flash[:success] = "User successfully updated."
             redirect_to pw_settings_user_management_profile_path(params[:id])
+        else
+            flash[:error] = @user.errors.full_messages.first
+            redirect_to pw_settings_user_management_profile_path(params[:id])
         end
         
+    end
+    
+    def account_settings    
+        @user = User.find(params[:id])
+    end
+    
+    def update_account_settings
+        
+        @user = User.find(params[:id])
+        
+        if @user.update(user_params)
+            flash[:success] = "Account settings successfully updated."
+            redirect_to pw_settings_user_management_account_settings_path(params[:id])
+        else
+            flash[:error] = @user.errors.full_messages.first
+            redirect_to pw_settings_user_management_account_settings_path(params[:id])
+        end
     end
     
     def destroy
@@ -89,6 +110,7 @@ class Pw::Settings::UserManagementController < ApplicationController
             flash[:success] = "User successfully deleted."
             redirect_to pw_settings_user_management_index_path
         end
+        
     end
     
     private
@@ -102,7 +124,7 @@ class Pw::Settings::UserManagementController < ApplicationController
     end
     
     def user_params   
-        params.require(:user).permit(:email, :username, :first_name, :last_name, :role, :gender, :birth_date, :address, :country, :postal_code, :phone_number, :password, :password_confirmation)
+        params.require(:user).permit(:email, :username, :first_name, :last_name, :role, :gender, :birth_date, :address, :country, :postal_code, :phone_number, :password, :password_confirmation, :avatar, :current_password, :password, :password_confirmation)
     end
     
 end

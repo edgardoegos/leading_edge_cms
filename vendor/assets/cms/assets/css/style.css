@@ -8215,6 +8215,25 @@ body.rtl .footer-widget {
     margin: 20px 0 0 0;
 }
 
+.img-avatar-container, .img-avatar-preview {
+  overflow: hidden;
+  text-align: center;
+  width: 100%;
+}
+
+
+.img-avatar-preview-sm {
+    height: 200px;
+    width: 200px;
+    border: 1px solid;
+    background: gainsboro;
+}
+.mdl-img-preview-avatar-sm {
+    height: 200px;
+    width: 200px;
+    background: #dcdcdc;
+}
+
 /*
 .cropper-container {
     width: 422px !important;
