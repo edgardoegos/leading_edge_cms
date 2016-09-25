@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  post_id: 1
+  post_type: 1
+  cover: 1
+  image: 
+
+two:
+  post_id: 1
+  post_type: 1
+  cover: 1
+  image: 

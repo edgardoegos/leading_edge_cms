@@ -1,0 +1,64 @@
+<div class="page-content">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div id="portlet-config" class="modal hide">
+      <div class="modal-header">
+        <button data-dismiss="modal" class="close" type="button"></button>
+        <h3>Widget Settings</h3>
+      </div>
+      <div class="modal-body"> Widget settings form goes here </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="content">
+        <div class="col-md-8 mp0i">
+          <ul class="breadcrumb">
+              <li><p>Settings</p></li>
+            <li><a href="#">User Management</a></li>
+            <li><a href="#" class="active">My Profile</a></li>
+          </ul>
+          <div class="page-title"> <i class="icon-custom-left"></i>
+            <h3>My <span class="semi-bold">Profile</span></h3>
+          </div>
+        </div>
+
+        <div class="col-md-4 mp0i">
+            <a href="<%= pw_settings_user_management_edit_profile_path(@user.id) %>" class="btn btn-info pull-right" style="margin: 30px 0 0 0;"><i class="fa fa-pencil"></i> Edit Personal Information</a>
+        </div>
+        
+        
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="grid simple vertical red">
+                    <div class="grid-title no-border">
+                        
+                    </div>
+                    <div class="grid-body no-border">
+                        <div class="col-md-2">
+                            <div class="dv-user-info-wrapper">
+                                <div class="dv-user-profile-pic">
+                                    <img src="<%= image_url('assets/img/profiles/avatar.jpg') %>"  alt="" data-src="<%= image_url('assets/img/profiles/avatar.jpg') %>" data-src-retina="<%= image_url('assets/img/profiles/avatar2x.jpg') %>" width="150" height="150" />                  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="dv-container-personal-info">
+                                <div class="row-fluid">
+                                    <address>
+                                        <strong><%= @user.first_name %> <%= @user.last_name %></strong><br>
+                                        <abbr title="Email">Email: </abbr> <a href="#"><%= @user.email %></a><br>
+                                        <abbr title="Phone">Birthdate:</abbr> <%= @user.birth_date %>
+                                    </address>
+                                    <address class="margin-bottom-20 margin-top-10">
+                                        <strong><%= @user.country %></strong><br>
+                                        <abbr title="Address">Address:</abbr> <%= @user.address %>, <%= @user.postal_code %><br>
+                                        <abbr title="Phone">Phone:</abbr> <%= @user.phone_number %>
+                                    </address>	
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+        
+    </div>
+  </div>

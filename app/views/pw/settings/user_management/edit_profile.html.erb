@@ -1,0 +1,95 @@
+<div class="page-content">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div id="portlet-config" class="modal hide">
+      <div class="modal-header">
+        <button data-dismiss="modal" class="close" type="button"></button>
+        <h3>Widget Settings</h3>
+      </div>
+      <div class="modal-body"> Widget settings form goes here </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="content">
+      <ul class="breadcrumb">
+          <li><p>Settings</p></li>
+        <li><a href="#">User Management</a></li>
+        <li><a href="#" class="active">Edit Profile</a></li>
+      </ul>
+      <div class="page-title"> <i class="icon-custom-left"></i>
+        <h3>Edit <span class="semi-bold">Profile</span></h3>
+      </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="grid simple vertical red">
+                    <div class="grid-body no-border">
+                        <div class="row column-seperation">
+                            <%= form_for @user, url: { action: "update_profile" }, :html => { :multipart => true, :class => "form-no-horizontal-spacing", :id => "form-condensed" } do |f| %>
+                                
+                                <div class="col-md-12">
+
+                                  <h4>Personal Information</h4>
+                                    <div class="row form-row">
+                                      <div class="col-md-6">
+                                          <%= f.text_field :first_name, autofocus: true, class: "form-control", placeholder: "First Name", required: true %>
+                                      </div>
+                                      <div class="col-md-6">
+                                          <%= f.text_field :last_name, autofocus: true, class: "form-control", placeholder: "Last Name", required: true %>
+                                      </div>
+                                    </div>
+                                    <div class="row form-row">
+                                      <div class="col-md-6">
+                                          <%= f.select(:gender, options_for_select(User.genders.collect{ |k, v| [k.humanize.titlecase, k]}), {}, { :class => 'select2 form-control' }) %>
+                                      </div>
+                                      <div class="col-md-6">
+                                          <div class="input-append success date col-md-11 col-lg-11 mp0i" style="width:93%">
+                                              <%= f.text_field :birth_date, value: format_date(@user.birth_date, "%d/%m/%Y"), autofocus: true, class: "form-control", placeholder: "Birth Date", required: true %>
+                                                <span class="add-on"><span class="arrow"></span><i class="fa fa-th"></i></span> 
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="row form-row">
+                                      <div class="col-md-12">
+                                          <%= f.text_field :address, autofocus: true, class: "form-control", placeholder: "Address", required: true %>
+                                      </div>
+                                    </div>
+                                    <div class="row form-row">
+                                      <div class="col-md-8">
+
+                                          <%= f.select(:country, options_for_select(@countries.collect{ |k, v| [v, v]}), {}, { :class => 'select2 form-control' }) %>
+                                      </div>
+                                      <div class="col-md-4">
+                                          <%= f.text_field :postal_code, autofocus: true, class: "form-control postal-code", placeholder: "Postal Code", required: true %>
+                                      </div>
+                                    </div>
+                                    <div class="row form-row">
+                                      <div class="col-md-12">
+                                          <%= f.text_field :phone_number, autofocus: true, class: "form-control phone", placeholder: "Phone Number", required: true %>
+                                      </div>
+                                    </div>
+
+
+                                </div>
+                                </div>
+                                <div class="form-actions">
+                                    <div class="pull-left">
+                                      <div class="row small-text">
+                                          <% if params[:action] == "new" %>
+                                            <p class="col-md-12">
+                                                NOTE - Email confirmation will be sent upon this request.
+                                            </p>
+                                          <% end %>
+                                    </div>
+                                    </div>
+                                    <div class="pull-right">
+                                        <button class="btn btn-info btn-cons" type="submit"><i class="icon-ok"></i> <%= params[:action] == "new" ? "Create" : "Update" %></button>
+                                        <a href="<%= pw_settings_user_management_index_path %>" class="btn btn-white btn-cons" type="button">Cancel</a>
+                                    </div>
+                                  </div>
+                        <% end %>
+                    </div>
+                </div> 
+            </div>
+        </div>
+        
+    </div>
+  </div>

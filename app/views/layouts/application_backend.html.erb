@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <meta charset="utf-8" />
+        <title>Leading Edge</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        
+        <!-- BEGIN PAGE CSS -->
+        <%= stylesheet_link_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.css") %>
+        <!-- BEGIN CORE CSS -->
+        <%= stylesheet_link_tag 'application-backend', media: 'all', 'data-turbolinks-track' => true %>
+    </head>
+    <body class="">
+        <%= render 'partials/header' %>
+        <div class="page-container row-fluid">
+            <%= render 'partials/side_nav' %>
+            <%= yield %>
+        </div>
+        
+        <!-- MAIN JS -->
+        <%= javascript_include_tag 'application-backend', 'data-turbolinks-track' => true %>
+        <!-- BEGIN PAGE JS -->
+        <%= javascript_include_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.js") %>
+        <script>
+            $.notification = function(options) {
+                var opts = $.extend({}, {type: 'notice', time: 3000}, options);
+                var o    = opts;
+
+                Messenger().post({
+                    message: o.message,
+                    type: o.type,
+                    showCloseButton: true,
+                    position: 'top'
+                });  
+            };
+        </script>
+        
+        <%= flash_notifications -%>
+    </body>
+</html>

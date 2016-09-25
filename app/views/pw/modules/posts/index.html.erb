@@ -1,0 +1,292 @@
+<div class="page-content">
+    
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div id="portlet-config" class="modal hide">
+      <div class="modal-header">
+        <button data-dismiss="modal" class="close" type="button"></button>
+        <h3>Widget Settings</h3>
+      </div>
+      <div class="modal-body"> Widget settings form goes here </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="content">
+        <div class="col-md-8 mp0i">
+          <ul class="breadcrumb">
+              <li><p>Modules</p></li>
+              <li><a class="active"><%= params[:post_type].humanize.titlecase %> Management</a></li>
+          </ul>
+          <div class="page-title"> <i class="fa fa-th-list"></i>
+            <h3>All <span class="semi-bold"><%= params[:post_type].humanize.titlecase %></span></h3>
+          </div>  
+        </div>
+        <div class="col-md-4 mp0i">
+            <a href="<%= pw_modules_new_post_path(params[:post_type]) %>" class="btn btn-info pull-right" style="margin: 30px 0 0 0;"><i class="fa fa-plus"></i> Create <%= params[:post_type].humanize.singularize.titlecase %></a>
+        </div>
+        
+        
+        
+        <div class="col-md-12 mp0i">
+          <ul class="nav nav-tabs" id="tab-post">
+            <li class="active"><a href="#all">All <%= params[:post_type].humanize.titlecase %></a></li>
+            <li><a href="#published">Published</a></li>
+            <li><a href="#drafted">Drafted</a></li>
+            <li><a href="#review">For Review</a></li>
+              <% if super_and_admin_roles %>
+            <li><a href="#trashed">Trashed</a></li>
+              <% end %>
+          </ul>
+            
+          <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+          <div class="tab-content">
+            <div class="tab-pane active" id="all">
+              <div class="row-fluid">
+                    <div class="span12">
+                      <div class="grid simple ">
+                         <table class="table table-striped" id="tbl-post-all" >
+                            <thead>
+                              <tr>
+                                <th>Cover</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Featured</th>
+                                <th>Status</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <% if @posts_all.present? %>
+                                    <% @posts_all.each_with_index do |post, index| %>
+                                        <tr id="tr-post-all-<%= index %>" class="odd gradeX" data-post="<%= post.to_json %>">
+                                            <td>
+                                                <% unless post.image_id.nil? %>
+                                                    <img class="img-fit" class="img-product-slider-fit" src="<%= get_cover_photo(post.image_id).image.url(:thumb) %></td>" alt="" width="100">
+                                                <% else %>
+                                                    <img class="img-fit" src="<%= asset_path('assets/img/empty-state-grid.png') %>" alt="" width="100">
+                                                <% end %>
+                                            <td>
+                                                <% if !author_role %>
+                                                    <a href="<%= pw_modules_edit_post_path(id: post.id) %>"><%= post.body["title"].titlecase %></a>
+                                                <% else %>
+                                                    <%= post.body["title"].titlecase %>
+                                                <% end %>
+                                            </td>
+                                            <td><%= post.category_name %></td>
+                                            <td><%= post.featured.humanize.titlecase %></td>
+                                            <td><span class="badge badge-<%= get_badge_for_status(post.status) %>"><%= post.status.humanize.titlecase %></span></td>
+                                        </tr>
+                                    <% end %>
+                                <% end %>
+                            </tbody>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="tab-pane" id="published">
+              <div class="row-fluid">
+                    <div class="span12">
+                      <div class="grid simple ">
+
+                         <table class="table table-striped" id="tbl-post-published" >
+                            <thead>
+                              <tr>
+                                <th>Cover</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Featured</th>
+                                <th>Status</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <% if @posts_published.present? %>
+                                    <% @posts_published.each_with_index do |post, index| %>
+                                        <tr id="tr-post-published-<%= index %>" class="odd gradeX" data-post="<%= post.to_json %>">
+                                             <td>
+                                                <% unless post.image_id.nil? %>
+                                                    <img class="img-fit" class="img-product-slider-fit" src="<%= get_cover_photo(post.image_id).image.url(:thumb) %></td>" alt="" width="100">
+                                                <% else %>
+                                                    <img class="img-fit" src="<%= asset_path('assets/img/empty-state-grid.png') %>" alt="" width="100">
+                                                <% end %>
+                                            <td>
+                                                <a href="<%= pw_modules_edit_post_path(id: post.id) %>"><%= post.body["title"].titlecase %></a>
+                                            </td>
+                                            <td><%= post.category_name %></td>
+                                            <td><%= post.featured.humanize.titlecase %></td>
+                                            <td><span class="badge badge-<%= get_badge_for_status(post.status) %>"><%= post.status.humanize.titlecase %></span></td>
+                                        </tr>
+                                    <% end %>
+                                <% end %>
+                            </tbody>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="tab-pane" id="drafted">
+                <div class="row">
+                <div class="col-md-12">
+                   <div class="row-fluid">
+                    <div class="span12">
+                      <div class="grid simple ">
+
+                         <table class="table table-striped" id="tbl-post-drafted" >
+                            <thead>
+                              <tr>
+                                <th>Cover</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Featured</th>
+                                <th>Status</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <% if @posts_drafted.present? %>
+                                    <% @posts_drafted.each_with_index do |post, index| %>
+                                        <tr id="tr-post-drafted-<%= index %>" class="odd gradeX" data-post="<%= post.to_json %>">
+                                             <td>
+                                                <% unless post.image_id.nil? %>
+                                                    <img class="img-fit" class="img-product-slider-fit" src="<%= get_cover_photo(post.image_id).image.url(:thumb) %></td>" alt="" width="100">
+                                                <% else %>
+                                                    <img class="img-fit" src="<%= asset_path('assets/img/empty-state-grid.png') %>" alt="" width="100">
+                                                <% end %>
+                                            <td>
+                                                <a href="<%= pw_modules_edit_post_path(id: post.id) %>"><%= post.body["title"].titlecase %></a>
+                                            </td>
+                                            <td><%= post.category_name %></td>
+                                            <td><%= post.featured.humanize.titlecase %></td>
+                                            <td><span class="badge badge-<%= get_badge_for_status(post.status) %>"><%= post.status.humanize.titlecase %></span></td>
+                                        </tr>
+                                    <% end %>
+                                <% end %>
+                            </tbody>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+                 
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="review">
+                <div class="row">
+                <div class="col-md-12">
+                   <div class="row-fluid">
+                    <div class="span12">
+                      <div class="grid simple ">
+
+                         <table class="table table-striped" id="tbl-post-review" >
+                            <thead>
+                              <tr>
+                                <th>Cover</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Featured</th>
+                                <th>Status</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <% if @posts_for_review.present? %>
+                                    <% @posts_for_review.each_with_index do |post, index| %>
+                                        <tr id="tr-post-review-<%= index %>" class="odd gradeX" data-post="<%= post.to_json %>">
+                                             <td>
+                                                <% unless post.image_id.nil? %>
+                                                    <img class="img-fit" class="img-product-slider-fit" src="<%= get_cover_photo(post.image_id).image.url(:thumb) %></td>" alt="" width="100">
+                                                <% else %>
+                                                    <img class="img-fit" src="<%= asset_path('assets/img/empty-state-grid.png') %>" alt="" width="100">
+                                                <% end %>
+                                            <td>
+                                                <a href="<%= pw_modules_edit_post_path(id: post.id) %>"><%= post.body["title"].titlecase %></a>
+                                            </td>
+                                            <td><%= post.category_name %></td>
+                                            <td><%= post.featured.humanize.titlecase %></td>
+                                            <td><span class="badge badge-<%= get_badge_for_status(post.status) %>"><%= post.status.humanize.titlecase %></span></td>
+                                        </tr>
+                                    <% end %>
+                                <% end %>
+                            </tbody>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+                 
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="trashed">
+              <div class="row">
+                <div class="col-md-12">
+                      <table class="table table-hover table-condensed" id="tbl-post-trashed">
+                        <thead>
+                            <tr>
+                                <th class="v-align-middle">
+                                    <div class="checkbox check-default">
+                                        <input type="checkbox" value="1" id="checkbox1">
+                                        <label for="checkbox1"></label>
+                                    </div>
+                                </th>
+                                <th>Cover</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Featured</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <% @posts_trash.each_with_index do |post, index| %>
+                                <tr id="tr-post-trash-<%= index %>" class="odd gradeX" data-post="<%= post.to_json %>">
+                                    <td class="v-align-middle">
+                                        <div class="checkbox check-default">
+                                            <input type="checkbox" value="3" id="checkbox2">
+                                            <label for="checkbox2"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <% unless post.image_id.nil? %>
+                                            <img class="img-fit" class="img-product-slider-fit" src="<%= get_cover_photo(post.image_id).image.url(:thumb) %></td>" alt="" width="100">
+                                        <% else %>
+                                            <img class="img-fit" src="<%= asset_path('assets/img/empty-state-grid.png') %>" alt="" width="100">
+                                        <% end %>
+                                    <td><%= post.body["title"].titlecase %></td>
+                                    <td><%= post.category_name %></td>
+                                    <td><%= post.featured.humanize.titlecase %></td>
+                                    <td><span class="badge badge-<%= get_badge_for_status(post.status) %>"><%= post.status.humanize.titlecase %></span></td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                      </table>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="mdl-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <br>
+              <i class="fa fa-trash-o fa-7x"></i>
+                <h4 id="myModalLabel" class="semi-bold">Warning: You are about to delete a user.</h4>
+              <p class="no-margin">This request is irreversible. Are you sure you want to delete <span id="spn-name" class="semi-bold"></span> permanently?</p>
+              <br>
+            </div>
+            <div class="modal-footer">
+                <%= form_tag({}, {:method => :delete, :id => "frm-delete"}) do %>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                <% end %>
+            </div>
+        </div>
+      <!-- /.modal-content -->
+    </div>
+<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

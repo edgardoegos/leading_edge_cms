@@ -1,0 +1,144 @@
+<div class="page-content">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div id="portlet-config" class="modal hide">
+      <div class="modal-header">
+        <button data-dismiss="modal" class="close" type="button"></button>
+        <h3>Widget Settings</h3>
+      </div>
+      <div class="modal-body"> Widget settings form goes here </div>
+    </div>
+    <div class="clearfix"></div>
+        <div class="content">
+            <div class="col-md-8 mp0i">
+                <ul class="breadcrumb">
+                    <li><p>Settings</p></li>
+                    <li><a class="active">Categories</a></li>
+                </ul>
+                <div class="page-title"> <i class="fa fa-th-list"></i>
+                    <h3><span class="semi-bold">Categories</span></h3>
+                </div>  
+            </div>
+            <div class="col-md-4 mp0i">
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                  <div class="grid simple">
+                    <div class="grid-title no-border">
+                      <div class="tools">  </div>
+                    </div>
+                    <div class="grid-body no-border">
+                         <table class="table table-striped" id="tbl-category" >
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <% @categories.each_with_index do |category, index| %>
+                                    <tr id="tr-category-<%= index %>" class="odd gradeX" data-category="<%= category.to_json %>">
+                                        <td><%= category.name %></td>
+                                        <td><%= category.post_type.humanize.titlecase %></td>
+                                        <td><span class="<%= category.status == "active" ? "badge badge-success" : "badge badge-important" %>"><%= category.status == "active" ? "Active" : "Inactive" %></span></td>
+                                        <td>
+                                            <a href="<%= edit_pw_settings_category_path(category.id) %>" type="button" class="btn btn-white btn-xs btn-mini"><i class="fa fa-pencil-square-o"></i></a>
+                                            <a type="button" class="btn btn-danger btn-xs btn-mini btn-delete" data-category="<%= category.to_json %>"><i class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                <% end %>
+                            </tbody>
+                          </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="grid simple">
+                    <div class="grid-title no-border">
+                        <h4>Add <span class="semi-bold">Categories</span></h4>
+                        <div class="tools"> </div>
+                    </div>
+                    <div class="grid-body no-border">
+                      <div class="row-fluid">
+
+                        <%= form_for @category, url: { action: "create" }, :html => { :multipart => true, :class => "form-no-horizontal-spacing", :id => "form-condensed" } do |f| %>
+                            
+                            <div class="form-group">
+                                <div class="row form-row">
+                                    <div class="col-md-12">
+                                        <%= f.select(:post_type, options_for_select(Post.post_types.collect{ |k, v| [k.humanize.titlecase, k]}, @category.post_type), {}, { :class => 'select2 form-control' }) %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row form-row">
+                                    <div class="col-md-12">
+                                        <%= f.text_field :name, autofocus: true, class: "form-control", placeholder: "Category Name", required: true %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row form-row">
+                                    <div class="col-md-12">
+                                        <%= f.text_field :description, autofocus: true, class: "form-control", placeholder: "Description", required: true %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row form-row">
+                                    <div class="col-md-12">
+                                        <div class="radio radio-primary">
+                                            <% Category.statuses.each do |k, v| %>
+                                                    <%= f.radio_button :status, k, checked: v == 0 ? "" : "checked" %>
+                                                    <%= f.label :status, k.humanize.titlecase, :value => k %>
+                                            <% end %>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="pull-left">
+
+                                </div>
+                                <div class="pull-right">
+                                  <button class="btn btn-info" type="submit">Create</button>
+                                  <a href="<%= pw_dashboard_path %>" class="btn btn-white" type="button">Cancel</a>
+                                </div>
+                              </div>
+                          </div>
+                        <% end %>
+                    </div>
+                  </div>
+                </div>
+          </div>
+        
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="mdl-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <br>
+              <i class="fa fa-trash-o fa-7x"></i>
+                <h4 id="myModalLabel" class="semi-bold">Warning: You are about to delete a category.</h4>
+              <p class="no-margin">This request is irreversible. Are you sure you want to delete <span id="spn-name" class="semi-bold"></span> permanently?</p>
+              <br>
+            </div>
+            <div class="modal-footer">
+                <%= form_tag({}, {:method => :delete, :id => "frm-delete"}) do %>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                <% end %>
+            </div>
+        </div>
+      <!-- /.modal-content -->
+    </div>
+<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

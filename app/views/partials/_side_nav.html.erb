@@ -1,0 +1,52 @@
+<div class="page-sidebar" id="main-menu">
+    <!-- BEGIN MINI-PROFILE -->
+    <div class="page-sidebar-wrapper scrollbar-dynamic" id="main-menu-wrapper">
+      <div class="user-info-wrapper">
+        <div class="profile-wrapper">
+            <img src="<%= image_url('assets/img/profiles/avatar.jpg') %>"  alt="" data-src="<%= image_url('assets/img/profiles/avatar.jpg') %>" data-src-retina="<%= image_url('assets/img/profiles/avatar2x.jpg') %>" width="69" height="69" />                  
+        </div>
+        <div class="user-info">
+          <div class="greeting">Welcome</div>
+            <div class="username"><%= current_user.first_name%> <span class="semi-bold"><%= current_user.last_name%></span></div>
+            <div class="status">
+                <%= current_user.role.humanize.titlecase %>
+            </div>
+        </div>
+      </div>
+      <ul>
+        <li class="start "><a href="<%= pw_dashboard_path %>" > <i class="icon-custom-home"></i> <span class="title">Dashboard</span> <span class="selected"></span> </a></li>
+          
+          
+        <li class=""> <a href="javascript:;"> <i class="icon-custom-thumb"></i> <span class="title">Modules</span> <span class="arrow "></span> </a>
+            <ul class="sub-menu">
+                <% Post.post_types.each do |k, v| %>
+                    <li> <a href="<%= pw_modules_path(k.pluralize) %>"><%= k.humanize.titlecase.pluralize %></a> </li>   
+                <% end %>
+            </ul>
+        </li>  
+        <% if super_and_admin_roles %>
+            <li class=""> <a href="javascript:;"> <i class="fa fa-cogs" aria-hidden="true"></i> <span class="title">Settings</span> <span class="arrow "></span> </a>
+                <ul class="sub-menu">
+                    <li> <a href="<%= pw_settings_general_index_path %>">General</a> </li>
+                    <li> <a href="<%= pw_settings_user_management_index_path %>">User Management</a> </li>
+                    <li> <a href="<%= pw_settings_categories_path %>">Categories</a></li>   
+                    <li> <a href="boxed_layout_v2.html">Activity Log</a></li>          
+                </ul>
+            </li>  
+          <% end %>
+      </ul>
+      <!-- END SIDEBAR MENU -->
+    </div>
+  </div>
+
+  <a href="#" class="scrollup">Scroll</a>
+
+  <div class="footer-widget">
+    <div class="progress transparent progress-small no-radius no-margin">
+      <div data-percentage="79%" class="progress-bar progress-bar-success animate-progress-bar" ></div>
+    </div>
+    <div class="pull-right">
+      <div class="details-status"> <span data-animation-duration="560" data-value="86" class="animate-number"></span>% </div>
+      <a href="lockscreen.html"><i class="fa fa-power-off"></i></a></div>
+  </div>
+  

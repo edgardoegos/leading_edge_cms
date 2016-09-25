@@ -1,0 +1,348 @@
+<style>
+    .img-container img {
+      max-width: 100%;
+    }
+    .image-crop {
+    min-height: 320px;
+    background: #white
+}
+    #dv-image-container {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        height: 300px;
+    }
+    
+    #dv-image-child-container {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: -17px; /* Increase/Decrease this value for cross-browser compatibility */
+        overflow-y: scroll;
+        padding-top: 10px;
+    }
+    
+</style>
+<div class="row">
+    <div class="col-md-7">
+        
+       <div class="row">
+            <div class="col-md-12">
+              <div class="grid simple">
+                <div class="grid-title no-border">
+                  <div class="tools"></div>
+                </div>
+                <div class="grid-body no-border">
+				<form id="form_traditional_validation" action="#">
+                           
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+                            <%= f.hidden_field :post_type, :value => params[:post_type].singularize, :class => "form-control" %>    
+                            <%= f.select(:category_id, options_for_select(get_categories(params[:post_type]).collect{ |c| [c.name, c.id]}, @post.category_id), {}, { :class => 'select2 form-control', :required => true }) %>                               
+						</div>
+                    </div>
+                    
+                      <div class="form-group">
+                        <label class="form-label">Title</label>
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+                            <%= text_field_tag "post[body][title]", @post.body["title"], :class => "form-control" %>                           
+						</div>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Subtitle</label>
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+                            <%= text_field_tag "post[body][subtitle]", @post.body["subtitle"], :class => "form-control" %>                               
+						</div>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Short Description</label>
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+                            <%= text_field_tag "post[body][description]", @post.body["short_desription"], :class => "form-control" %>                                 
+						</div>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Content</label>
+                        <div class="input-with-icon  right">                                       
+							<i class=""></i>
+                            <div class="fld-content">
+                                <%= cktext_area "post[body][content]",  "", :class => 'ckeditor', :value => @post.body["content"] %>    
+                            </div>
+						</div>
+                      </div>  
+                      <div class="form-group">
+                        <label class="form-label">Tags</label>
+                        <div class="input-with-icon  right">                                       
+							<i class=""></i>
+                            <%= text_field_tag "post[body][tags]", @post.body["tags"], :class => "form-control tagsinput", :data => { :role => "tagsinput" }  %>  
+						</div>
+                      </div> 
+				</form>
+                </div>
+              </div>
+            </div>	
+          </div>	 
+    </div>
+        
+    <div class="col-md-5">
+        <div class="col-md-12 mp0i">
+            <div class="grid simple">
+            <div class="grid-title no-border">
+                <h4>Image <span class="semi-bold">Attachment</span></h4>
+                <div class="tools"> 
+                    <button type="button" class="btn btn-info btn-xs btn-small" data-target="#mdl-image-cropper" data-toggle="modal"><i class="fa fa-paperclip" aria-hidden="true"></i> Add Image</button>
+                </div>
+            </div>
+            <div id="dv-image-container" class="grid-body no-border">
+                <div id="dv-image-child-container">
+                    <table style="width: 100%;">
+                        <tbody id="tbody-image-template">
+                            <% if @post_images.present? %>
+                                <% @post_images.each do |post_image| %>
+                                    <tr id="tr-new-<%= post_image.id %>">
+                                        <td>
+                                            <div class="notification-messages success" style="height:80px">
+                                                <div class="col-md-3 mp0i">
+                                                    <input type="hidden" id="img-file" name="post[image_attachments][][id]" value="<%= post_image.id %>" />
+                                                    <img src="<%= post_image.image.url(:thumb) %>" alt="" data-src="<%= post_image.image.url(:thumb) %>" data-src-retina="<%= post_image.image.url(:thumb) %>" width="100" height="50">
+                                                    <input type="hidden" id="img-file" name="post[image_attachments][][image]" value="" />
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="message-wrapper">
+                                                        <div class="heading"><%= post_image.image.original_filename %></div>
+                                                        <div class="description">
+                                                            <div class="row-fluid" style="margin: 15px 0 0 -5px">
+                                                                <div class="checkbox check-info">
+
+                                                                    <% if post_image.cover == 1 %>
+                                                                        <input id="checkbox-<%= post_image.id %>" type="checkbox" class="unique cb-coverphoto" name="post[image_attachments][][cover]" value="<%= post_image.cover %>" name="post[image_attachments][][cover]" checked>
+                                                                        <label for="checkbox-<%= post_image.id %>" style="padding-left: 25px;">Set as cover photo</label>
+                                                                    <% else %>
+                                                                        <input id="checkbox-<%= post_image.id %>" type="checkbox" class="unique cb-coverphoto" name="post[image_attachments][][cover]" value="<%= post_image.cover %>" name="post[image_attachments][][cover]">
+                                                                    <label for="checkbox-<%= post_image.id %>" style="padding-left: 25px;">Set as cover photo</label>
+                                                                    <% end %>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pull-right">
+                                                        <button type="button" class="btn btn-danger btn-xs btn-mini btn-delete" data-id="<%= post_image.id %>" data-type="image"><i class="fa fa-trash"></i></button>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% end %>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-12 mp0i">
+            <div class="grid simple">
+            <div class="grid-title no-border">
+                <h4>Save <span class="semi-bold">As</span></h4>
+                <div class="tools"> 
+
+                </div>
+            </div>
+            <div class="grid-body no-border">
+              <div class="row-fluid">
+                    <div class="form-group">
+                        <div class="row form-row">
+                            <div class="col-md-12">
+                                <p>Do you want to publish your new post?</p>
+                                <div class="radio radio-primary">
+                                    <% if params[:action] == "new" %>
+                                        <% Post.statuses.each do |k, v| %>
+                                            <% if v != 3 %>
+                                    
+                                                <% if author_role %>
+                                                    <% next if v == 2 %>
+                                                <% end %>
+                                    
+                                                <%= f.radio_button :status, k, checked: v == 0 ? "checked" : "" %>
+                                                <%= f.label :status, k.humanize.titlecase, :value => k  %>
+                                            <% end %>
+                                        <% end %>
+                                    <% else %>
+                                        <% Post.statuses.each do |k, v| %>
+                                    
+                                            <% if author_role %>
+                                                <% next if v == 2 %>
+                                            <% end %>
+                                    
+                                            <%= f.radio_button :status, k, checked: k == @post.status ? "checked" : "" %>
+                                            <%= f.label :status, k.humanize.titlecase, :value => k  %>
+                                        <% end %>
+                                    <% end %>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row form-row">
+                            <div class="col-md-12">
+                                <p>Do you want this post to be featured?</p>
+                                <div class="radio radio-primary">
+                                    <% if params[:action] == "new" %>
+                                        <% Post.featureds.each do |k, v| %>
+                                            <%= f.radio_button :featured, k, checked: v == 1 ? "checked" : "" %>
+                                            <%= f.label :featured, k.humanize.titlecase, :value => k  %>
+                                        <% end %>
+                                    <% else %>
+                                        <% Post.featureds.each do |k, v| %>
+                                    <%= f.radio_button :featured, k, checked: k == @post.featured ? "checked" : "" %>
+                                            <%= f.label :featured, k.humanize.titlecase, :value => k  %>
+                                        <% end %>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="form-actions">
+                        <div class="pull-left">
+                            
+                        </div>
+                        <div class="pull-right">
+                            <button class="btn btn-info" type="submit"><%= params[:action] == "new" ? "Create" : "Update" %></button>
+                          <a href="<%= pw_modules_path(params[:post_type]) %>" class="btn btn-white" type="button">Cancel</a>
+                        </div>
+                      </div>
+                  </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="mdl-image-cropper" role="dialog" aria-labelledby="modalLabel" tabindex="-1">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="modalLabel"><i class="fa fa-crop"></i> Cropper</h4>
+          </div>
+          <div class="modal-body">
+            <div class="img-container">
+                
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="image-crop">
+                                <img src="<%= image_path('assets/img/empty-state.png') %>">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            
+                            <div class="col-md-12 mp0i">
+                                 <h4>Preview image</h4>
+                                <div class="img-preview mdl-img-preview-sm"></div>
+                                <p>Recomended photo size: 1920 × 700</p>
+                            </div>
+                            <div class="col-md-12 mp0i">
+                                
+                                <div class="col-md-12 mp0i">
+                                    <input type="hidden" class="hide">
+                                    <label title="Upload image file" for="inputImage" class="btn btn-white btn-sm btn-small">
+                                        <input type="file" class="hide" id="inputImage" accept="image/*">
+                                        <i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload your photo
+                                    </label>
+                                </div>    
+                                <div class="col-md-12 mp0i">
+                                    <h4>Crop Tools</h4>
+                                    <div class="dv-btn-command-container">
+                                        <div class="btn-group">
+                                            <button class="btn btn-white btn-sm btn-small" id="zoomIn" type="button"><i class="fa fa-search-plus" aria-hidden="true"></i></button>
+                                            <button class="btn btn-white btn-sm btn-small" id="zoomOut" type="button"><i class="fa fa-search-minus" aria-hidden="true"></i></button>
+                                            <button class="btn btn-white btn-sm btn-small" id="rotateRight" type="button"><i class="fa fa-undo"></i></button>
+                                            <button class="btn btn-white btn-sm btn-small" id="rotateLeft" type="button"><i class="fa fa-repeat"></i></button>
+                                            <button class="btn btn-white btn-sm btn-small" id="btn-reload" type="button"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <div class="pull-left">
+             
+              </div>
+              <div class="pull-right">
+                    <button type="button" id="btn-add-image" class="btn btn-info">Add Image</button>
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div id="confirmClear" class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <br>
+              <i class="fa fa-trash-o fa-7x"></i>
+                <h4 id="myModalLabel" class="semi-bold">Warning: You are about to clear this image attachment.</h4>
+              <p class="no-margin">This request is irreversible. Are you sure you wish to proceed?</p>
+              <br>
+            </div>
+            <div class="modal-footer">
+                <%= form_tag({}, {:method => :delete, :id => "frm-image-attachment-delete"}) do %>
+                    <input type="hidden" id="hnd-fld-id" value="">
+                    <input type="hidden" id="hnd-fld-type" value="">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="confirm-clear" data-type="">Delete</button>
+                <% end %>
+            </div>
+        </div>
+      <!-- /.modal-content -->
+    </div>
+</div>
+
+
+<script id="post-image-tr" type="text/x-handlebars-template">
+    <tr id="tr-new-{{countTr}}">
+        <td>
+            <div class="notification-messages success" style="height:80px">
+                <div class="col-md-3 mp0i">
+                    <img src="{{imageSrc}}" alt="" data-src="{{imageSrc}}" data-src-retina="{{imageSrc}}" width="100" height="50">
+                    <input type="hidden" id="img-file" name="post[image_attachments][][image]" value="{{imageSrc}}" />
+                    <input type="hidden" id="img-filename" name="post[image_attachments][][image_file_name]" value="{{fileName}}" />
+                </div>
+                <div class="col-md-9">
+                    <div class="message-wrapper">
+                        <div class="heading">{{fileName}}</div>
+                        <div class="description">
+                            <div class="row-fluid" style="margin: 15px 0 0 -5px">
+                                <div class="checkbox check-info">
+                                    <input id="checkbox-{{countTr}}" type="checkbox" class="unique cb-coverphoto" value="0" name="post[image_attachments][][cover]">
+                                    <label for="checkbox-{{countTr}}" style="padding-left: 25px;">Set as cover photo</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-danger btn-xs btn-mini btn-clear" data-id="{{countTr}}" data-type="image"><i class="fa fa-trash"></i></button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</script>

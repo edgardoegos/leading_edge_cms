@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <meta charset="utf-8" />
+        <title>Webarch - Responsive Admin Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        <!-- BEGIN PAGE CSS -->
+        <%= stylesheet_link_tag 'application-backend-public', media: 'all', 'data-turbolinks-track' => true %>
+        <!-- MAIN CSS -->
+        <%= stylesheet_link_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.css") %>
+        <!-- END CSS TEMPLATE -->
+    </head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+    <body class="error-body no-top lazy"  data-original="<%= image_url('assets/img/hongkong-wallpaper.jpg') %>"  style="background-image: url(assets/img/hongkong-wallpaper.jpg);background-size:100% auto;"> 
+        <div class="container">
+        <div class="row login-container animated fadeInUp">  
+        <div class="col-md-9 col-md-offset-1 tiles white no-padding">
+		 <div class="p-t-30 p-l-40 p-b-20 xs-p-t-10 xs-p-l-10 xs-p-b-10"> 
+             <% if app_settings.image.present? %>
+                <img src="<%= app_settings.image.url(:original) %>" width="350px">
+             <% else %>
+             <img src="<%= image_url('assets/img/empty-state-grid.png') %>" width="350px">
+             <% end %>
+          <p style="margin: 20px 0 0 !important">Sign into your Leading Edge account<br></p>
+        </div>
+		<div class="tiles grey p-t-20 p-b-20 text-black">
+            <%= yield %>
+		</div>   
+      </div>   
+  </div>
+</div>
+        <!-- MAIN JS -->
+        <%= javascript_include_tag 'application-backend-public', 'data-turbolinks-track' => true %>
+        <!-- BEGIN PAGE JS -->
+        <%= javascript_include_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.js") %>
+    </body>
+
+</html>

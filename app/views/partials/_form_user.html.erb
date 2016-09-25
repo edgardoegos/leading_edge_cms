@@ -1,0 +1,81 @@
+<div class="row column-seperation">
+<div class="col-md-6">
+  <h4>Account Information</h4>  
+    <div class="row form-row">
+      <div class="col-md-12">
+          <%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "Email", required: params[:action] == "new" ? true : false, disabled: params[:action] == "new" ? false : true  %>
+      </div>
+    </div>
+    <div class="row form-row">
+      <div class="col-md-12">
+        <%= f.text_field :username, autofocus: true, class: "form-control", placeholder: "Username", required: params[:action] == "new" ? true : false, disabled: params[:action] == "new" ? false : true  %>
+      </div>
+    </div>
+    <div class="row form-row">
+      <div class="col-md-5">
+          <%= f.text_field :first_name, autofocus: true, class: "form-control", placeholder: "First Name", required: true %>
+      </div>
+      <div class="col-md-7">
+          <%= f.text_field :last_name, autofocus: true, class: "form-control", placeholder: "Last Name", required: true %>
+      </div>
+    </div>
+
+    <div class="row form-row">
+      <div class="col-md-12">
+         <%= f.select(:role, options_for_select(User.roles.reject {|k, v|  v == 0 }.collect{ |k, v| [k.humanize.titlecase, k]}, @user.role), {}, { :class => 'select2 form-control' }) %>
+      </div>
+    </div>
+
+</div>
+<div class="col-md-6">
+
+  <h4>Personal Information</h4>
+    <div class="row form-row">
+      <div class="col-md-5">
+          <%= f.select(:gender, options_for_select(User.genders.collect{ |k, v| [k.humanize.titlecase, k]}), {}, { :class => 'select2 form-control' }) %>
+      </div>
+      <div class="col-md-7">
+          <div class="input-append success date col-md-10 col-lg-11">
+              <%= f.text_field :birth_date, value: format_date(@user.birth_date, "%d/%m/%Y"), autofocus: true, class: "form-control", placeholder: "Birth Date", required: true %>
+                <span class="add-on"><span class="arrow"></span><i class="fa fa-th"></i></span> 
+          </div>
+      </div>
+    </div>
+    <div class="row form-row">
+      <div class="col-md-12">
+          <%= f.text_field :address, autofocus: true, class: "form-control", placeholder: "Address", required: true %>
+      </div>
+    </div>
+    <div class="row form-row">
+      <div class="col-md-8">
+
+          <%= f.select(:country, options_for_select(@countries.collect{ |k, v| [v, v]}), {}, { :class => 'select2 form-control' }) %>
+      </div>
+      <div class="col-md-4">
+          <%= f.text_field :postal_code, autofocus: true, class: "form-control postal-code", placeholder: "Postal Code", required: true %>
+      </div>
+    </div>
+    <div class="row form-row">
+      <div class="col-md-12">
+          <%= f.text_field :phone_number, autofocus: true, class: "form-control phone", placeholder: "Phone Number", required: true %>
+      </div>
+    </div>
+
+
+</div>
+</div>
+<div class="form-actions">
+    <div class="pull-left">
+      <div class="row small-text">
+          <% if params[:action] == "new" %>
+            <p class="col-md-12">
+                NOTE - Email confirmation will be sent upon this request.
+            </p>
+          <% end %>
+    </div>
+    </div>
+    <div class="pull-right">
+        <button class="btn btn-info btn-cons" type="submit"><i class="icon-ok"></i> <%= params[:action] == "new" ? "Create" : "Update" %></button>
+        <a href="<%= pw_settings_user_management_index_path %>" class="btn btn-white btn-cons" type="button">Cancel</a>
+    </div>
+  </div>
